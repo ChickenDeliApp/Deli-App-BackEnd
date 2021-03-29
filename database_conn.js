@@ -19,11 +19,12 @@ class User extends Model {
 }
 
 User.init({
-    /*username: {
+    username: {
         type: DataTypes.STRING(50),
         allowNull: false,
         unique: true
-    },*/
+    },
+    
     email: {
         type: DataTypes.STRING(255),
         allowNull: false,

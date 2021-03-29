@@ -60,9 +60,22 @@ router.post("/register", body('username').notEmpty().isLength({max: 15}), body('
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 2)
     }).then(user => {
-        res.status(200).json({user: user})
+        res.redirect(200, "/")
     }).catch(err => {
-        res.status(400).json({error: err})
+        var msg
+
+        switch (err?.original?.code) {
+            case "ER_DUP_ENTRY":
+                msg = "Email or Username already taken"
+                break;
+            default:
+                msg = "A database error occured!"
+                break;
+        }
+
+        res.status(400).json({
+            msg: msg
+        })
     })
 })
 

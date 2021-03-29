@@ -1,5 +1,6 @@
 require("dotenv").config()
 const { Sequelize, Model, DataTypes, DECIMAL, INTEGER } = require("sequelize")
+const bcrypt = require("bcrypt")
 
 const sequelize = new Sequelize({
     dialect: "mysql",
@@ -8,10 +9,15 @@ const sequelize = new Sequelize({
     database: "chicky",
 
     username: "root",
-    password: "admin",
+    password: "admin"
 })
 
-class User extends Model {}
+class User extends Model {
+    verifyPassword(password){
+        return bcrypt.compareSync(password, this.password); 
+    }
+}
+
 User.init({
     username: {
         type: DataTypes.STRING(50),

@@ -39,9 +39,9 @@ User.init({
     password: {
         type: DataTypes.STRING(60),
         allowNull: false
-    }
+    },
 
-    /*isAdmin: {
+    isAdmin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
     }
@@ -50,7 +50,7 @@ User.init({
 
     createdAt: "joinDate",
     updatedAt: false,
-    timestamps: true*/
+    timestamps: true
 }, {
         sequelize,
         updatedAt: false

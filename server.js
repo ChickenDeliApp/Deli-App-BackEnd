@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 
 app.get('/register', (req, res) => {
    // User.findAll();
-   res.send('Users!')
+   res.send('User!')
 });
 const PORT = 3599 
 app.listen( PORT, () => {

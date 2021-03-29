@@ -42,10 +42,20 @@ passport.use(new local({
 
 router.use(flash())
 
-router.post("/login", passport.authenticate('local', {
-    failureFlash: true,
+router.post("/login", (req, res, next) =>
+ passport.authenticate('local', (err, user, info) =>
+  {
+  if(!user){
+      return res.redirect('/login')
+  }
+  req.logIn(user, function(err){
+      if(!err){
+        return res.redirect('/');
+      }
+     
+  })(req, res, next)
+    
 
-    successRedirect: "/"
 }))
 
 router.post("/register", body('username').notEmpty().isLength({max: 15}), body('email').isEmail().withMessage("must be a valid email"), body('password').isLength({min: 5, max: 60}).withMessage("must be between 5 and 60 characters long"), (req, res) => {

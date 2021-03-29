@@ -9,7 +9,7 @@ const sequelize = new Sequelize({
     database: "chicky",
 
     username: "root",
-    password: "admin"
+    password: ""
 })
 
 class User extends Model {
@@ -19,12 +19,11 @@ class User extends Model {
 }
 
 User.init({
-    username: {
+    /*username: {
         type: DataTypes.STRING(50),
         allowNull: false,
         unique: true
-    },
-
+    },*/
     email: {
         type: DataTypes.STRING(255),
         allowNull: false,
@@ -36,23 +35,26 @@ User.init({
             }
         }
     },
-
+   
     password: {
         type: DataTypes.STRING(60),
         allowNull: false
-    },
+    }
 
-    isAdmin: {
+    /*isAdmin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
     }
 }, {
-    sequelize,
+    
 
     createdAt: "joinDate",
     updatedAt: false,
-    timestamps: true
-})
+    timestamps: true*/
+}, {
+        sequelize,
+        updatedAt: false
+    })
 
 class DeliChain extends Model {}
 DeliChain.init({

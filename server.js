@@ -20,7 +20,15 @@ app.use(function (req, res, next) {
 
 const loginRoutes = require("./login")
 app.use(loginRoutes)
+app.get('/', (req, res) => {
+    res.send('Users!')
+})
 
+
+app.get('/register', (req, res) => {
+   // User.findAll();
+   res.send('Users!')
+});
 const PORT = 3599 
 app.listen( PORT, () => {
     console.log(`Listening on ${PORT}!`);

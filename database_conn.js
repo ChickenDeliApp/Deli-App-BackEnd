@@ -8,8 +8,8 @@ const sequelize = new Sequelize({
     port: process.env.PORT || 3306,
     database: "chicky",
 
-    username: process.env.USERNAME || "root",
-    password: process.env.PASSWORD || ""
+    username: process.env.DB_USERNAME || "root",
+    password: process.env.DB_PASSWORD || ""
 })
 
 class User extends Model {

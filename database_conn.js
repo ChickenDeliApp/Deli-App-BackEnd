@@ -24,7 +24,7 @@ User.init({
         allowNull: false,
         unique: true
     },
-    
+
     email: {
         type: DataTypes.STRING(255),
         allowNull: false,
@@ -35,6 +35,11 @@ User.init({
                 msg: "Must be a valid e-mail"
             }
         }
+    },
+
+    birth: {
+        type: DataTypes.DATEONLY,
+        allowNull: false
     },
    
     password: {

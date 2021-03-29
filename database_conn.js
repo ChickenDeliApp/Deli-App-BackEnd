@@ -4,12 +4,12 @@ const bcrypt = require("bcrypt")
 
 const sequelize = new Sequelize({
     dialect: "mysql",
-    host: "localhost",
-    port: 3306,
+    host: process.env.HOST || "localhost",
+    port: process.env.PORT || 3306,
     database: "chicky",
 
-    username: "root",
-    password: ""
+    username: process.env.DEV || "root",
+    password: process.env.DEV || ""
 })
 
 class User extends Model {

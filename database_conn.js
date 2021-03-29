@@ -8,8 +8,8 @@ const sequelize = new Sequelize({
     port: process.env.PORT || 3306,
     database: "chicky",
 
-    username: process.env.DEV || "root",
-    password: process.env.DEV || ""
+    username: process.env.USERNAME || "root",
+    password: process.env.PASSWORD || ""
 })
 
 class User extends Model {
@@ -46,15 +46,11 @@ User.init({
         defaultValue: false
     }
 }, {
-    
-
+    sequelize,
     createdAt: "joinDate",
     updatedAt: false,
     timestamps: true
-}, {
-        sequelize,
-        updatedAt: false
-    })
+})
 
 class DeliChain extends Model {}
 DeliChain.init({

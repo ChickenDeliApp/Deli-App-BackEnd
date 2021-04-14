@@ -48,7 +48,7 @@ router.post("/login", passport.authenticate('local', {
     successRedirect: "/"
 }))
 
-router.post("/register", body('username').notEmpty().isLength({max: 15}), body('email').isEmail().withMessage("must be a valid email"), body('password').isLength({min: 5, max: 60}).withMessage("must be between 5 and 60 characters long"), (req, res) => {
+router.post("/register", body('dob').notEmpty().withMessage("must supply date of birth").isDate().withMessage("must be a date"), body('username').notEmpty().isLength({min:4, max: 15}).withMessage("must be between 5 and 15 characters long"), body('email').isEmail().withMessage("must be a valid email"), body('password').isLength({min: 5, max: 60}).withMessage("must be between 5 and 60 characters long"), (req, res) => {
     const errors = validationResult(req)
 
     if(!errors.isEmpty()){
@@ -58,7 +58,8 @@ router.post("/register", body('username').notEmpty().isLength({max: 15}), body('
     User.create({
         username: req.body.username,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 2)
+        password: bcrypt.hashSync(req.body.password, 2),
+		birth: req.body.dob
     }).then(user => {
         res.redirect(200, "/")
     }).catch(err => {
@@ -69,6 +70,7 @@ router.post("/register", body('username').notEmpty().isLength({max: 15}), body('
                 msg = "Email or Username already taken"
                 break;
             default:
+				console.log(err);
                 msg = "A database error occured!"
                 break;
         }

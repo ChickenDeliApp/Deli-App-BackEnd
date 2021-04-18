@@ -81,4 +81,6 @@ router.post("/register", body('dob').notEmpty().withMessage("must supply date of
     })
 })
 
-module.exports = router
+module.exports = {
+	router
+}

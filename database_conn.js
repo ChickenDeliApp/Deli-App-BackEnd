@@ -77,7 +77,8 @@ DeliChain.init({
     sequelize,
     updatedAt: false
 })
-User.hasOne(DeliChain, {foreignKey: "managedBy"})
+// User.hasOne(DeliChain, {foreignKey: "managedBy"})
+DeliChain.belongsTo(User)
 
 class DeliRestaurant extends Model {}
 DeliRestaurant.init({
@@ -133,7 +134,7 @@ Review.init({
     createdAt: "createDate"
 })
 DeliRestaurant.hasMany(Review, {foreignKey: "restaurant"})
-User.hasOne(Review, {foreignKey: "createdBy"})
+Review.belongsTo(User)
 
 const DEV = process.env.DEV || false
 if(DEV){

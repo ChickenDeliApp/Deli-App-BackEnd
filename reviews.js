@@ -5,6 +5,7 @@ const User = require("./database_conn").User
 const DeliRestaurant = require("./database_conn").DeliRestaurant
 const sequelize = require("sequelize")
 const db = require("./database_conn").sequelize
+const { isAuthed } = require("./login")
 
 router.get("/latest", async (req, res) => {
 	try{
@@ -32,14 +33,6 @@ router.get("/topdelis", async (req, res) => {
 		res.sendStatus(400)
 	}
 })
-
-function isAuthed(req, res, next){
-	if(req.isAuthenticated()){
-		next();
-	} else {
-		res.sendStatus(403)
-	}
-}
 
 router.post("/new", isAuthed, async (req, res) => {
 	try{

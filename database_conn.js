@@ -77,7 +77,8 @@ class DeliChain extends Model {}
 DeliChain.init({
     chainName: {
         type: DataTypes.STRING(80),
-        allowNull: false
+        allowNull: false,
+		primaryKey: true
     },
 
     // managedBy: {
@@ -127,7 +128,7 @@ DeliRestaurant.init({
     sequelize,
     updatedAt: false
 })
-DeliChain.hasMany(DeliRestaurant, {foreignKey: "restaurantChain"})
+DeliRestaurant.belongsTo(DeliChain)
 
 class Review extends Model {}
 Review.init({
@@ -151,14 +152,12 @@ Review.init({
 DeliRestaurant.hasMany(Review, {foreignKey: "restaurant"})
 Review.belongsTo(User)
 
-const DEV = process.env.DEV || false
-if(DEV){
+if(process.env.DEVENV !== 'false'){
     sequelize.query('SET FOREIGN_KEY_CHECKS = 0').then(async () => {
         await sequelize.sync({force: true});
         await sequelize.query("SET FOREIGN_KEY_CHECKS = 1")
     })
 }
-
 
 module.exports = {
     sequelize,

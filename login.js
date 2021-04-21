@@ -13,11 +13,9 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser((email, done) => {
-    User.findOne({
-        where: {email: email}
-    }).then((user) => {
+    User.findByPk(email).then((user) => {
         done(null, user)
-    }).catch(err => { done(err, null) })
+    }).catch(err => { done(err) })
 })
 
 passport.use(new local({
@@ -40,13 +38,36 @@ passport.use(new local({
     }
 ))
 
+function isAuthed(req, res, next){
+	if(req.isAuthenticated()){
+		next();
+	} else {
+		res.sendStatus(401)
+	}
+}
+
 router.use(flash())
 
 router.post("/login", passport.authenticate('local', {
-    failureFlash: true,
+    failureFlash: true
+}), (req, res) => {
+	res.status(200).json({
+		username: req.user?.username ?? undefined
+	})
+})
 
-    successRedirect: "/"
-}))
+router.post("/logout", (req, res) => {
+	req.logOut()
+
+	res.sendStatus(200)
+})
+
+router.get("/authed", (req, res) => {
+	res.json({
+		loggedIn: req.isAuthenticated(),
+		username: req.user?.username ?? undefined 
+	})
+})
 
 router.post("/register", body('dob').notEmpty().withMessage("must supply date of birth").isDate().withMessage("must be a date"), body('username').notEmpty().isLength({min:4, max: 15}).withMessage("must be between 5 and 15 characters long"), body('email').isEmail().withMessage("must be a valid email"), body('password').isLength({min: 5, max: 60}).withMessage("must be between 5 and 60 characters long"), (req, res) => {
     const errors = validationResult(req)
@@ -82,5 +103,6 @@ router.post("/register", body('dob').notEmpty().withMessage("must supply date of
 })
 
 module.exports = {
-	router
+	router,
+	isAuthed
 }

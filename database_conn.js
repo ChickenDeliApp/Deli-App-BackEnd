@@ -149,14 +149,17 @@ Review.init({
     updatedAt: "lastUpdated",
     createdAt: "createDate"
 })
-DeliRestaurant.hasMany(Review, {foreignKey: "restaurant"})
+DeliRestaurant.hasMany(Review)
+Review.belongsTo(DeliRestaurant)
 Review.belongsTo(User)
 
-if(process.env.DEVENV !== 'false'){
+if(process.env.DEVENV === 'true'){
     sequelize.query('SET FOREIGN_KEY_CHECKS = 0').then(async () => {
         await sequelize.sync({force: true});
         await sequelize.query("SET FOREIGN_KEY_CHECKS = 1")
     })
+} else {
+	sequelize.sync()
 }
 
 module.exports = {

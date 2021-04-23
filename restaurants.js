@@ -1,12 +1,11 @@
 const express = require( "express" )
 const sequelize = require( "sequelize" )
 const db = require( "./database_conn" ).sequelize
-const { DeliChain, User, DeliRestaurant } = require( "./database_conn" )
+const { DeliChain, User, DeliRestaurant, Review } = require( "./database_conn" )
 const { isAuthed } = require( "./login" )
 var router = express.Router()
 
 router.post( "/new", isAuthed, async ( req, res ) => {
-
 	try {
 		await DeliChain.create( {
 			chainName: req.body.name
@@ -36,6 +35,37 @@ router.get( "/restaurant/all", async ( req, res ) => {
 		res.sendStatus( 400 )
 	}
 } )
+
+router.get( "/restaurant/:id", async( req, res ) => {
+	try {
+		const data = await DeliRestaurant.findOne({
+			where: {
+				id: req.params.id
+			},
+			include: [
+				{
+					model: Review,
+					include: [
+						{
+							model: User,
+							attributes: ["username"]
+						}
+					],
+					attributes: ["rating", "createDate", "text"],
+					order: [
+						["createDate", "desc"]
+					]
+				}
+			]
+		})
+
+		res.status(200).send(data)
+	} catch (err) {
+		console.log(err);
+
+		res.sendStatus(400)
+	}
+})
 
 router.post( "/restaurant/new", isAuthed, async ( req, res ) => {
 
